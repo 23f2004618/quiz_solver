@@ -18,22 +18,20 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright browsers and required system dependencies
-# We install only chromium to save space, as the code uses p.chromium.launch()
-RUN playwright install chromium
+# Install Playwright system dependencies (requires root)
 RUN playwright install-deps chromium
-
-# Copy the rest of the application code
-COPY . .
 
 # Create a non-root user with ID 1000 (standard for Hugging Face Spaces)
 RUN useradd -m -u 1000 user
 
-# Change ownership of the app directory to the user
-RUN chown -R user:user /app
-
 # Switch to the non-root user
 USER user
+
+# Install Playwright browsers (as user, so they end up in /home/user/.cache)
+RUN playwright install chromium
+
+# Copy the rest of the application code
+COPY --chown=user:user . .
 
 # Expose port 7860 (Hugging Face Spaces default)
 EXPOSE 7860
