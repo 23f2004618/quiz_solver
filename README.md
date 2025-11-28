@@ -1,3 +1,12 @@
+---
+title: Quiz Solver
+emoji: 🧠
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+app_port: 7860
+---
+
 # Quiz Solver API
 
 Automated quiz solver using Playwright + LLMs (OpenAI GPT & Google Gemini) + comprehensive data processing utilities. Handles complex quiz chains with multi-format data processing, chart/PDF/ZIP generation, and intelligent answer extraction.
