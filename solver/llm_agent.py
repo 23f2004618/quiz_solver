@@ -340,6 +340,13 @@ def execute_python_code(code: str) -> str:
         from sentence_transformers import SentenceTransformer
     except ImportError:
         SentenceTransformer = None
+    
+    try:
+        import torch
+    except ImportError:
+        torch = None
+        
+    from sklearn.metrics.pairwise import cosine_similarity
 
     # Remove markdown code blocks if present
     code = re.sub(r'^```python\s*', '', code)
@@ -366,7 +373,9 @@ def execute_python_code(code: str) -> str:
                 "print": print,
                 "openai": openai,
                 "os": os,
-                "SentenceTransformer": SentenceTransformer
+                "SentenceTransformer": SentenceTransformer,
+                "torch": torch,
+                "cosine_similarity": cosine_similarity
             }
             exec(code, exec_globals)
         return output_buffer.getvalue()
