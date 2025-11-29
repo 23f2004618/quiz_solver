@@ -394,10 +394,17 @@ async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int =
                 # But the server might expect the exact URL visited.
                 # Let's try to use the exact current_url.
                 
+                # FIX: The server rejects URLs with query parameters like ?email=...
+                # We must strip the query parameters from the URL sent in the payload
+                clean_url_for_payload = current_url.split("?")[0]
+                # Also remove trailing dots if any (like project2.)
+                if clean_url_for_payload.endswith("."):
+                    clean_url_for_payload = clean_url_for_payload[:-1]
+
                 payload = {
                     "email": email,
                     "secret": secret,
-                    "url": current_url,
+                    "url": clean_url_for_payload,
                     "answer": answer,
                 }
 
