@@ -19,10 +19,10 @@ import utils.html_utils as html_utils
 # =====================================================================
 # MAIN ENTRY
 # =====================================================================
-async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int = 165):
-    """Solve quiz with 165-second timeout per quiz (15-second buffer from 3-minute limit)
+async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int = 280):
+    """Solve quiz with 280-second timeout per quiz (20-second buffer from 5-minute limit)
     
-    NOTE: Each quiz URL gets its own 3-minute window. When moving to the next quiz
+    NOTE: Each quiz URL gets its own 5-minute window. When moving to the next quiz
     via redirect, the timer resets.
     """
     current_url = start_url
@@ -368,8 +368,8 @@ async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int =
                         if remaining_time < 10: raise TimeoutError("Not enough time for LLM processing")
                         
                         # Determine model based on attempt
-                        model_to_use = "gpt-4o-mini"
-                        if attempts == 2: model_to_use = "gpt-5"
+                        model_to_use = "gpt-4o"
+                        if attempts == 2: model_to_use = "o1-mini"
                         elif attempts == 3: model_to_use = "gemini-2.5-flash"
                         
                         print(f"Using model: {model_to_use}")

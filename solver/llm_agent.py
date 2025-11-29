@@ -293,9 +293,21 @@ async def _run_openai(messages, model_override=None):
                 raise ValueError(f"Client not configured for model {model}")
 
             # Prepare arguments
+            final_messages = messages
+            
+            # O1 models do not support 'system' role. Convert to 'user'.
+            if model.startswith("o1-"):
+                new_messages = []
+                for msg in messages:
+                    if msg["role"] == "system":
+                        new_messages.append({"role": "user", "content": f"System Instruction: {msg['content']}"})
+                    else:
+                        new_messages.append(msg)
+                final_messages = new_messages
+
             kwargs = {
                 "model": model,
-                "messages": messages
+                "messages": final_messages
             }
             
             # GPT-5 / O1 models do not support temperature=0
