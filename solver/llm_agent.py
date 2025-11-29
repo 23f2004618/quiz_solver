@@ -131,6 +131,13 @@ CRITICAL DATA PROCESSING RULES:
   * You can use `pandas` as `pd`, `numpy` as `np`, `scikit-learn` modules, `turfpy`.
   * To load data, use the URLs found in the context (e.g. `pd.read_csv('url')`).
   * PRINT the final result you want to see.
+- For CSV Normalization / JSON Array tasks:
+  * If asked to return a JSON array from a CSV, use PYTHON_REQUEST to:
+    1. Load the CSV using pandas.
+    2. Perform the necessary cleaning/normalization (e.g., date formatting, type conversion).
+    3. Convert the DataFrame to a JSON string using `df.to_json(orient='records')`.
+    4. Print the JSON string.
+  * Do NOT try to construct the JSON manually.
 
 Answer format requirements:
 - For numerical answers: return ONLY the number without quotes (e.g., 42, 3.14) - NOT as JSON like {"data": 5}

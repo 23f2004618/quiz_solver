@@ -303,6 +303,13 @@ async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int =
 
                 # Download Audio
                 audio_links = [link for link in links if is_audio_file(link)]
+                # Also check if the current_url itself is an audio file (redirected)
+                if is_audio_file(current_url):
+                    # Avoid duplicates if it's already in links
+                    abs_links = [urljoin(current_url, l) for l in audio_links]
+                    if current_url not in abs_links:
+                        audio_links.append(current_url)
+
                 for audio_link in audio_links:
                     audio_url = urljoin(current_url, audio_link)
                     print(f"Downloading audio from: {audio_url}")
