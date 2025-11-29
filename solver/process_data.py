@@ -369,7 +369,7 @@ async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int =
                         
                         # Determine model based on attempt
                         model_to_use = "gpt-4o"
-                        if attempts == 2: model_to_use = "o1-mini"
+                        if attempts == 2: model_to_use = "gpt-5"
                         elif attempts == 3: model_to_use = "gemini-2.5-flash"
                         
                         print(f"Using model: {model_to_use}")
