@@ -57,15 +57,15 @@ async def handle_quiz(request: Request):
         return JSONResponse({"error": "Invalid secret"}, status_code=403)
 
     try:
-        # Solve quiz (async chain) with 175-second timeout (5s buffer from 3min)
+        # Solve quiz (async chain) with 300-second timeout (5 minutes)
         result = await asyncio.wait_for(
             solve_quiz(email, secret, url),
-            timeout=175.0
+            timeout=300.0
         )
     except asyncio.TimeoutError:
-        # Return timeout error if processing exceeds 175 seconds
+        # Return timeout error if processing exceeds 300 seconds
         return JSONResponse(
-            {"error": "Quiz solving exceeded time limit (3 minutes)"},
+            {"error": "Quiz solving exceeded time limit (5 minutes)"},
             status_code=408
         )
     except Exception as e:
