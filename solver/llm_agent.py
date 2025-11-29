@@ -333,6 +333,7 @@ def execute_python_code(code: str) -> str:
     import re
     import networkx
     import scipy
+    import requests
     
     # Remove markdown code blocks if present
     code = re.sub(r'^```python\s*', '', code)
@@ -353,6 +354,7 @@ def execute_python_code(code: str) -> str:
                 "networkx": networkx,
                 "nx": networkx,
                 "scipy": scipy,
+                "requests": requests,
                 "json": json,
                 "re": re,
                 "print": print
@@ -591,7 +593,7 @@ async def solve_with_llm(page_text: str, model: str = None) -> str:
                 
                 # Execute code
                 print(f"[LLM AGENT] Executing Python code...")
-                exec_output = execute_python_code(code)
+                exec_output = await asyncio.to_thread(execute_python_code, code)
                 print(f"[LLM AGENT] Code output: {exec_output[:200]}...")
                 
                 # Add result to history and continue loop

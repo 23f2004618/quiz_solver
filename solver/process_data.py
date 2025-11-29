@@ -12,6 +12,7 @@ from utils.downloader import download_file
 from utils.pdf_utils import extract_pdf_text
 from utils.excel_utils import load_excel
 from utils.audio_utils import is_audio_file, transcribe_audio
+from utils.vision_utils import vision_ocr
 import utils.html_utils as html_utils
 
 
@@ -286,6 +287,19 @@ async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int =
                         context_parts.append(f"\n\nJSON file content from {json_url}:\n{text}")
                     except Exception as e:
                         print(f"Error downloading JSON {json_url}: {e}")
+
+                # Download Images
+                image_extensions = {".png", ".jpg", ".jpeg", ".webp"}
+                image_links = [link for link in links if any(link.lower().endswith(ext) for ext in image_extensions)]
+                for img_link in image_links:
+                    img_url = urljoin(current_url, img_link)
+                    print(f"Downloading Image from: {img_url}")
+                    try:
+                        buf = await download_file(img_url)
+                        ocr_text = await vision_ocr(buf)
+                        context_parts.append(f"\n\nImage OCR from {img_url}:\n{ocr_text}")
+                    except Exception as e:
+                        print(f"Error processing image {img_url}: {e}")
 
                 # Download Audio
                 audio_links = [link for link in links if is_audio_file(link)]

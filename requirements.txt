@@ -20,4 +20,5 @@ imageio-ffmpeg
 networkx
 scipy
 python-pptx
+requests
 
