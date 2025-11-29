@@ -364,6 +364,11 @@ async def solve_quiz(email: str, secret: str, start_url: str, max_seconds: int =
                         print(f"LLM error: {e}")
                         answer = None
 
+                # Fallback: If submit_url is missing but we are on the known challenge domain, default to /submit
+                if not submit_url and "tds-llm-analysis.s-anand.net" in current_url:
+                    print("Submit URL not found, defaulting to /submit")
+                    submit_url = "https://tds-llm-analysis.s-anand.net/submit"
+
                 # Submit URL check
                 if not submit_url:
                     if last_result and last_result.get("url"):
