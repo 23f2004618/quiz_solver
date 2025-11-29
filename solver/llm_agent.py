@@ -334,7 +334,13 @@ def execute_python_code(code: str) -> str:
     import networkx
     import scipy
     import requests
-    
+    import openai
+    import os
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ImportError:
+        SentenceTransformer = None
+
     # Remove markdown code blocks if present
     code = re.sub(r'^```python\s*', '', code)
     code = re.sub(r'^```\s*', '', code)
@@ -357,7 +363,10 @@ def execute_python_code(code: str) -> str:
                 "requests": requests,
                 "json": json,
                 "re": re,
-                "print": print
+                "print": print,
+                "openai": openai,
+                "os": os,
+                "SentenceTransformer": SentenceTransformer
             }
             exec(code, exec_globals)
         return output_buffer.getvalue()

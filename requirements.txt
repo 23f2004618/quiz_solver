@@ -21,4 +21,5 @@ networkx
 scipy
 python-pptx
 requests
+sentence-transformers
 
